@@ -21,18 +21,26 @@ app.post("/api/add", async (req, res) => {
     await seedr.addMagnet(magnet);
     res.status(200).send({ message: "Magnet added Successfully." });
   } catch (error) {
-    res.status(500).send({ message: "Internal server error.", error: error });
+    if (error.message == "Request failed with status code 401") {
+      res.status(401).send({ message: "Bad Credentials", error: error });
+    } else {
+      res.status(500).send({ message: "Internal server error.", error: error });
+    }
   }
 });
 
 app.post("/api/videos", async (req, res) => {
   try {
     let { pwd, usr } = { ...req.body };
-    await seedr.login(usr,pwd);
+    await seedr.login(usr, pwd);
     let data = await seedr.getVideos();
-    res.status(200).send({ message: "Video List",data:data });
+    res.status(200).send({ message: "Video List", data: data });
   } catch (error) {
-    res.status(500).send({ message: "Internal server error.", error: error });
+    if (error.message == "Request failed with status code 401") {
+      res.status(401).send({ message: "Bad Credentials", error: error });
+    } else {
+      res.status(500).send({ message: "Internal server error.", error: error });
+    }
   }
 });
 
