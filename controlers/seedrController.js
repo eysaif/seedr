@@ -14,11 +14,7 @@ const addNew = async (req, res, next) => {
     await seedr.addMagnet(magnet);
     res.status(200).send({ message: "Magnet added Successfully." });
   } catch (error) {
-    if (error.message == "Request failed with status code 401") {
-      res.status(401).send({ message: "Bad Credentials", error: error });
-    } else {
-      res.status(500).send({ message: "Internal server error.", error: error });
-    }
+    next(error);
   }
 };
 
@@ -34,11 +30,7 @@ const allVideos = async (req, res, next) => {
     let data = await seedr.getVideos();
     res.status(200).send({ message: "Video List", data: data });
   } catch (error) {
-    if (error.message == "Request failed with status code 401") {
-      res.status(401).send({ message: "Bad Credentials", error: error });
-    } else {
-      res.status(500).send({ message: "Internal server error.", error: error });
-    }
+    next(error);
   }
 };
 
