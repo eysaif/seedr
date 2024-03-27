@@ -1,6 +1,6 @@
 import express from "express";
-import Seedr from "seedr";
 import cors from "cors";
+import seedrRoutes from "./routes/seedrRoute.js";
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -11,39 +11,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Initialize SEEDER
-const seedr = new Seedr();
-
-app.post("/api/add", async (req, res) => {
-  try {
-    let { pwd, usr, magnet } = { ...req.body };
-    await seedr.login(usr, pwd);
-    await seedr.addMagnet(magnet);
-    res.status(200).send({ message: "Magnet added Successfully." });
-  } catch (error) {
-    if (error.message == "Request failed with status code 401") {
-      res.status(401).send({ message: "Bad Credentials", error: error });
-    } else {
-      res.status(500).send({ message: "Internal server error.", error: error });
-    }
-  }
-});
-
-app.post("/api/videos", async (req, res) => {
-  try {
-    let { pwd, usr } = { ...req.body };
-    await seedr.login(usr, pwd);
-    let data = await seedr.getVideos();
-    res.status(200).send({ message: "Video List", data: data });
-  } catch (error) {
-    if (error.message == "Request failed with status code 401") {
-      res.status(401).send({ message: "Bad Credentials", error: error });
-    } else {
-      res.status(500).send({ message: "Internal server error.", error: error });
-    }
-  }
-});
-
+/**
+ * App Routes
+ */
+app.use("/api/v1/seedr", seedrRoutes);
 app.use("/", (req, res) => {
   res.send("<h1>Welcome to Seedr</h1>");
 });
