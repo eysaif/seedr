@@ -7,4 +7,4 @@ BODY: {"usr":"","pwd":"","magnet":""}
 
 # Fetch the Video List from your Seedr Account
 POST : /api/v1/seedr/videos
-BODY: {"usr":"","pwd":"","magnet":""}
+BODY: {"usr":"","pwd":""}
