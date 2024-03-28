@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import seedrRoutes from "./routes/seedrRoute.js";
+import torRoutes from "./routes/torRoute.js";
 import { dbConnection } from "./configs/dbConnector.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
@@ -21,7 +22,7 @@ dotenv.config({ path: "./configs/config.env" });
 /**
  * Database Conection
  */
-dbConnection();
+// dbConnection();
 
 /**
  * TO READ THE REQUEST BODY
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
  * App Routes
  */
 app.use("/api/v1/seedr", seedrRoutes);
+app.use("/api/v1/tor", torRoutes);
 app.use("/", (req, res) => {
   res.send("<h1>Welcome to Seedr</h1>");
 });
