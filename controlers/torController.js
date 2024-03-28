@@ -40,7 +40,7 @@ const torList = async (req, res, next) => {
 const generatedImage = (req, res, next) => {
   try {
     const fileName = req.body.imageId || "";
-    res.status(201).sendFile(path.join(__dirname, `../../tmp/${fileName}.jpg`));
+    res.status(201).sendFile(path.join(__dirname, `../../../tmp/${fileName}.jpg`));
   } catch (error) {
     next(error);
   }
