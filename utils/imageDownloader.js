@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 const downloadImage = async (url,fileName) => {
   try {
-    let destination = path.join(__dirname, `${fileName}.jpg`);
+    let destination = path.join(__dirname, `/tmp/${fileName}.jpg`);
     const response = await axios({
       method: "get",
       url: url,
