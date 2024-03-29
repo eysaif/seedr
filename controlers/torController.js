@@ -15,11 +15,16 @@ const __dirname = path.dirname(__filename);
 
 const addTor = async (req, res, next) => {
   try {
-    const url = req.body.imageURL || "";
+    const url = req.body.Poster || "";
     const fileName = req.body.fileName || new Date().getTime();
     await downloadImage(url, fileName)
       .then(() => {
-        res.status(200).send({ message: "New TorCard added Successfully." });
+        res
+          .status(200)
+          .send({
+            message: "New TorCard added Successfully.",
+            data: { ...req.body, fileName: fileName },
+          });
       })
       .catch((error) => {
         next(error);
@@ -40,7 +45,9 @@ const torList = async (req, res, next) => {
 const generatedImage = (req, res, next) => {
   try {
     const fileName = req.body.imageId || "";
-    res.status(201).sendFile(path.join(__dirname, `../../../tmp/${fileName}.jpg`));
+    res
+      .status(201)
+      .sendFile(path.join(__dirname, `../../../tmp/${fileName}.jpg`));
   } catch (error) {
     next(error);
   }
