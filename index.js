@@ -22,7 +22,7 @@ dotenv.config({ path: "./configs/config.env" });
 /**
  * Database Conection
  */
-// dbConnection();
+dbConnection();
 
 /**
  * TO READ THE REQUEST BODY

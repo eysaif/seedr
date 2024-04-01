@@ -2,6 +2,7 @@ import Seedr from "seedr";
 
 //Initialize SEEDER
 const seedr = new Seedr();
+
 /**
  * @desc   Seedr Page Add new magnet
  * @route  PUT /api/v1/seedr/add
