@@ -50,7 +50,8 @@ const addTor = async (req, res, next) => {
 
 const torList = async (req, res, next) => {
   try {
-    const cardList = await torcard.find({});
+    const skipItem = req.params.skipitem || 0;
+    const cardList = await torcard.find({}).skip(skipItem).limit(2);
     if (cardList != null && cardList.length > 0) {
       res.status(200).send(cardList);
       return;
