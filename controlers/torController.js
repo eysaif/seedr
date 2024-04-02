@@ -24,17 +24,17 @@ const addTor = async (req, res, next) => {
         const fileData = await fs.readFileSync(
           path.join(__dirname, `../../../tmp/${fileName}.jpg`)
         );
-        const binary = Buffer.from(fileData);
+        const b64 = Buffer.from(fileData).toString("base64");
+        const mimeType = "image/jpeg";
         const data = {
-          path: binary,
+          path: `data:${mimeType};base64,${b64}`,
           Name: req.body.Name,
           Files: req.body.Files,
         };
         await torcard.insertMany(data);
-        res.status(200).send({
-          message: "New TorCard added Successfully.",
-          data: { ...req.body, fileName: fileName },
-        });
+        res
+          .status(200)
+          .send({ message: "Added Successfully", responseData: data });
       })
       .catch((error) => {
         next(error);
@@ -46,14 +46,12 @@ const addTor = async (req, res, next) => {
 
 const torList = async (req, res, next) => {
   try {
-    const cardList = await torcard.findOne({});
-    if(cardList !=null){
-     // cardList.forEach((item)=>{
-      cardList.path = 'data:image/jpg;base64,' + cardList.path.toString('base64');
-       // item.path = img;
-     // })
+    const cardList = await torcard.find({});
+    if (cardList != null && cardList.length > 0) {
+      res.status(200).send(cardList);
+      return;
     }
-    res.status(200).send(cardList);
+    res.status(200).send({ message: "No record found." });
   } catch (error) {
     next(error);
   }
