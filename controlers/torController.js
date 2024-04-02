@@ -32,6 +32,10 @@ const addTor = async (req, res, next) => {
           Files: req.body.Files,
         };
         await torcard.insertMany(data);
+        fs.unlink(
+          path.join(__dirname, `../../../tmp/${fileName}.jpg`),
+          (error) => (error) ? console.log("unable to delete file", error) : ''
+        );
         res
           .status(200)
           .send({ message: "Added Successfully", responseData: data });
