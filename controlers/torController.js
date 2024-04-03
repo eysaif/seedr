@@ -34,7 +34,7 @@ const addTor = async (req, res, next) => {
         await torcard.insertMany(data);
         fs.unlink(
           path.join(__dirname, `../../../tmp/${fileName}.jpg`),
-          (error) => (error) ? console.log("unable to delete file", error) : ''
+          (error) => (error ? console.log("unable to delete file", error) : "")
         );
         res
           .status(200)
@@ -51,7 +51,7 @@ const addTor = async (req, res, next) => {
 const torList = async (req, res, next) => {
   try {
     const skipItem = req.params.skipitem || 0;
-    const cardList = await torcard.find({}).skip(skipItem).limit(2);
+    const cardList = await torcard.find({}).skip(skipItem).limit(6);
     if (cardList != null && cardList.length > 0) {
       res.status(200).send(cardList);
       return;
@@ -73,4 +73,14 @@ const generatedImage = (req, res, next) => {
   }
 };
 
-export { addTor, torList, generatedImage };
+const removeCard = async (req, res, next) => {
+  try {
+    console.log({_id:req.body._id})
+    const removedItem = await torcard.deleteOne({_id:req.body._id});
+    res.status(201).send({ message: "Item removed." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { addTor, torList, generatedImage, removeCard };
